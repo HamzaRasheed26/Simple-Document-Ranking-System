@@ -102,12 +102,20 @@ class RankingSystem:
         return sorted(rankings, key=lambda x: x[1], reverse=True)
 
     # --- Display Results ---
-    def display_ranked_documents(self, ranked_docs, top_n=5):
+    def display_ranked_documents(self, ranked_docs, method):
         """Display ranked documents with snippets."""
         print("\nTop Relevant Documents:\n")
-        for i, (doc_name, score) in enumerate(ranked_docs[:top_n], start=1):
-            print(f"{i}. {doc_name} (Score: {score:.4f})")
-            print(f"Snippet: {self.documents[doc_name][:100]}...\n")  # Display first 100 characters
+        print("=======================================================================\n")
+        for i, (doc_name, score) in enumerate(ranked_docs, start=1):
+            print(f"{i}. {doc_name} ")
+            print(f"Snippet: {self.documents[doc_name][:100]}...")  # Display first 100 characters
+            if method == '1':
+                print(f"Keywords Matched: {score}")
+            elif method == '2':
+                print(f"Score: {score:.4f}")
+            elif method == '3':
+                print(f"Similarity : {score:.4f}")
+            print("=======================================================================\n")
 
 # --- Main Program ---
 def main():
@@ -123,11 +131,11 @@ def main():
             print("--- Document Ranking System ---")
             print("******************************\n")
 
-            print("\nChoose a ranking method:")
+            print("Choose a ranking method:")
             print("1. Keyword Matching")
             print("2. TF-IDF Scoring")
             print("3. Cosine Similarity")
-            method = input("Enter the number of your choice: ").strip()
+            method = input("\nEnter the number of your choice: ").strip()
             
             if method not in ['1', '2', '3']:
                 print("Invalid choice. Please try again.")
@@ -146,7 +154,7 @@ def main():
                 elif method == '3':
                     ranked_docs = ranking_system.rank_by_cosine_similarity(query)
                 
-                ranking_system.display_ranked_documents(ranked_docs)
+                ranking_system.display_ranked_documents(ranked_docs, method)
             else:
                     print("Query cannot be empty. Please enter a valid search term.")
 
